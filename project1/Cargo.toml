@@ -1,0 +1,25 @@
+[package]
+name = "kvs"
+version = "0.1.0"
+authors = ["Sighery"]
+description = "A key-value store"
+edition = "2018"
+
+# See more keys and their definitions at
+# https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+test = false
+doctest = false
+
+[[bin]]
+name = "kvs"
+path = "src/bin/kvs.rs"
+test = false
+doctest = false
+
+[dev-dependencies]
+assert_cmd = "0.11.1"
+predicates = "1.0.1"
+
+[dependencies]
