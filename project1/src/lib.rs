@@ -20,7 +20,9 @@ impl KvStore {
 	/// let mut kvstore = KvStore::new();
 	/// ```
 	pub fn new() -> Self {
-		Self { storage: HashMap::new() }
+		Self {
+			storage: HashMap::new(),
+		}
 	}
 
 	/// Retrieve a value from the store, from a key String

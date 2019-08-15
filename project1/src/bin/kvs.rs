@@ -5,7 +5,6 @@ use clap::App;
 extern crate kvs;
 use kvs::KvStore;
 
-
 fn main() {
 	let mut kvstore = KvStore::new();
 
