@@ -1,7 +1,4 @@
 name: "kvs"
-version: "0.1.0"
-author: "Sighery"
-about: "A key-value store"
 subcommands:
     - get:
         about: "Get the string value of a given string key"

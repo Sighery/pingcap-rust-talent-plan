@@ -10,7 +10,11 @@ fn main() {
 	let mut kvstore = KvStore::new();
 
 	let yaml = load_yaml!("cli.yml");
-	let matches = App::from_yaml(yaml).get_matches();
+	let matches = App::from_yaml(yaml)
+		.about(crate_description!())
+		.author(crate_authors!("\n"))
+		.version(crate_version!())
+		.get_matches();
 
 	if let Some(matches) = matches.subcommand_matches("get") {
 		kvstore.get(matches.value_of("KEY").unwrap().to_string());
