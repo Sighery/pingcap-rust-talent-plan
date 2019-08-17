@@ -5,6 +5,17 @@ use std::collections::HashMap;
 
 #[derive(Default, Debug)]
 /// Struct for a key-value store of String keys and values
+/// Key/value pairs are stored in a `HashMap` in memory and not persisted to
+/// disk.
+///
+/// Example:
+///
+/// ```rust
+/// # use kvs::KvStore;
+/// let mut store = KvStore::new();
+/// store.set("key".to_owned(), "value".to_owned());
+/// assert_eq!(store.get("key".to_owned()), Some("value".to_owned()));
+/// ```
 pub struct KvStore {
 	storage: HashMap<String, String>,
 }
@@ -39,10 +50,7 @@ impl KvStore {
 	/// }
 	/// ```
 	pub fn get(&mut self, key: String) -> Option<String> {
-		match self.storage.get(&key) {
-			None => None,
-			Some(value) => Some(value.clone()),
-		}
+		self.storage.get(&key).cloned()
 	}
 
 	/// Remove a given key from the store
