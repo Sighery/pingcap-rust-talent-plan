@@ -1,29 +1,27 @@
 #[macro_use]
-extern crate clap;
-use clap::App;
+extern crate structopt;
+use structopt::StructOpt;
 
 extern crate kvs;
 use kvs::KvStore;
 
+mod cli;
+use cli::{KvsCli, KvsCommand};
+
 fn main() {
 	let mut kvstore = KvStore::new();
 
-	let yaml = load_yaml!("cli.yml");
-	let matches = App::from_yaml(yaml)
-		.about(crate_description!())
-		.author(crate_authors!("\n"))
-		.version(crate_version!())
-		.get_matches();
+	let opts = KvsCli::from_args();
 
-	if let Some(matches) = matches.subcommand_matches("get") {
-		kvstore.get(matches.value_of("KEY").unwrap().to_string());
-	} else if let Some(matches) = matches.subcommand_matches("rm") {
-		kvstore.get(matches.value_of("KEY").unwrap().to_string());
-	} else if let Some(matches) = matches.subcommand_matches("set") {
-		let key = matches.value_of("KEY").unwrap().to_string();
-		let value = matches.value_of("VALUE").unwrap().to_string();
-		kvstore.set(key, value);
-	} else {
-		panic!("Some subcommand must be used");
-	}
+	match opts.commands {
+		KvsCommand::Get { key } => {
+			let copy_key = key.clone();
+			match kvstore.get(key) {
+				Some(value) => println!("Value for key {} is {}", copy_key, value),
+				None => println!("No key {} in the store", copy_key),
+			}
+		}
+		KvsCommand::Rm { key } => kvstore.remove(key),
+		KvsCommand::Set { key, value } => kvstore.set(key, value),
+	};
 }
