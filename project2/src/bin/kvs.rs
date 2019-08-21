@@ -2,10 +2,12 @@
 extern crate structopt;
 use structopt::StructOpt;
 
+use kvs::Result;
+
 mod cli;
 use cli::{KvsCli, KvsCommand};
 
-fn main() {
+fn main() -> Result<()> {
 	let opts = KvsCli::from_args();
 
 	match opts.commands {

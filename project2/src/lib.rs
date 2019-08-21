@@ -1,19 +1,20 @@
 #![deny(missing_docs)]
 //! A key value store module
 
+extern crate failure;
+#[macro_use]
+extern crate failure_derive;
+
 use std::collections::HashMap;
-pub use std::io::Result;
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 
+/// Placeholder generic error for kvs
+#[derive(Fail, Debug)]
+#[fail(display = "Generic kvs error")]
+pub struct GenericError;
 
-// /// Placeholder documentation
-// pub enum Result<T, E> {
-// 	/// Placeholder documentation
-// 	Ok(T),
-// 	/// Placeholder documentation
-// 	Err(E),
-// }
+/// Placeholder generic Result for kvs
+pub type Result<T> = std::result::Result<T, GenericError>;
 
 #[derive(Default, Debug)]
 /// Struct for a key-value store of String keys and values
@@ -80,11 +81,9 @@ impl KvStore {
 	/// let mut kvstore = KvStore::new();
 	/// kvstore.remove("test_key".to_string());
 	/// ```
-	pub fn remove(&mut self, key: String) -> Result<String> {
-		match self.storage.remove(&key) {
-			Some(value) => Ok(value),
-			None => Err(Error::new(ErrorKind::Other, "Placeholder")),
-		}
+	pub fn remove(&mut self, key: String) -> Result<()> {
+		self.storage.remove(&key);
+		Ok(())
 	}
 
 	/// Set a given key and value Strings in the store
@@ -97,7 +96,8 @@ impl KvStore {
 	/// let mut kvstore = KvStore::new();
 	/// kvstore.set("test_key".to_string(), "test_value".to_string());
 	/// ```
-	pub fn set(&mut self, key: String, value: String) -> Result<String> {
-		Ok(self.storage.insert(key, value).unwrap_or_default())
+	pub fn set(&mut self, key: String, value: String) -> Result<()> {
+		self.storage.insert(key, value);
+		Ok(())
 	}
 }
